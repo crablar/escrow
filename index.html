@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <style>
+      img.avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+      }
+      input.search {
+        width: 100%;
+        border-radius: 10px;
+        margin-top: 5rem;
+      }
+      .betbox {
+        border: 1px solid black;
+        margin-top: 2rem;
+      }
+      img.vote-banner {
+        width: 100px;
+        height: 100px;
+        border-radius: 5px;
+      }
+      h1.total {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Left status -->
+        <div class="col-md-2">
+          <h1>Escrow</h1>
+          <p>Whichever side bets more wins.</p>
+          <p class="text-center"><img class="avatar" src="avatar.jpg"></p>
+          <p class="text-center">Will</p>
+          <h2 class="text-center">$666.66</h2>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <input class="search" type="text">
+          </div>
+
+          <div class="row">
+            <div class="betbox col-md-12 text-center">
+              <h1>The new Spiderman movie sucks.</h1>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-success" style="margin-right: 4rem;">Yes, bet $1</button>
+                  <img class="vote-banner" src="spiderman.jpg">
+                  <button type="button" class="btn btn-danger" style="margin-left: 4rem;">No, bet $1</button>
+                </div>
+              </div>
+              <h1 class="total">Total wagered: $5</h1>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="betbox col-md-12 text-center">
+              <h1>Hulu has a better selection than Kindle Fire TV.</h1>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-success" style="margin-right: 4rem;">Yes, bet $3</button>
+                  <img class="vote-banner" src="hulu.png">
+                  <button type="button" class="btn btn-danger" style="margin-left: 4rem;">No, bet $3</button>
+                </div>
+              </div>
+              <h1 class="total">Total wagered: $36</h1>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-2 text-center">
+          <br>
+          <p><a href="#">Home</a></p>
+          <p><a href="#">Will</a></p>
+          <button type="button" class="btn btn-default">Make a bet</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
