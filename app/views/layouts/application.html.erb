@@ -36,6 +36,30 @@
 </head>
 <body>
 
+<div class="container-fluid">
+  <div class="row">
+    <!-- Left status -->
+    <div class="col-md-2">
+      <h1>Escrow</h1>
+      <p>Whichever side bets more wins.</p>
+      <p class="text-center"><img class="avatar" src="avatar.jpg"></p>
+      <p class="text-center">Will</p>
+      <h2 class="text-center">$666.66</h2>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <input class="search" type="text">
+      </div>
+    </div>
+    <div class="col-md-2 text-center">
+      <br>
+      <p><a href="#">Home</a></p>
+      <p><a href="#">Will</a></p>
+      <button type="button" class="btn btn-default">Make a bet</button>
+    </div>
+  </div>
+</div>
+
 <p class="navbar-text pull-right">
   <% if user_signed_in? %>
       Logged in as <strong><%= current_user.email %></strong>.
