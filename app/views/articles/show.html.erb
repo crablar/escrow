@@ -8,18 +8,6 @@
         <button type="button" class="btn btn-danger" style="margin-left: 4rem;">No, bet $1</button>
       </div>
     </div>
-    <h1 class="total"><%= @article.text %></h1>
+    <h1 class="total"><%= @article.min_bet %></h1>
   </div>
 </div>
-
-<p>
-  <strong>Title:</strong>
-  <%= @article.title %>
-</p>
-
-<p>
-  <strong>Text:</strong>
-  <%= @article.text %>
-</p>
-
-<%= link_to 'Back', articles_path %>
