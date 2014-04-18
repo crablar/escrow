@@ -14,3 +14,8 @@
  *= require_self
  *= require bootstrap.min
  */
+
+
+#make_bet {
+	margin-top:8px;
+}
