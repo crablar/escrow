@@ -3,7 +3,9 @@ Escrow::Application.routes.draw do
   get 'welcome/index'
   #get 'articles/new'
 
-  resources :articles
+  resources :articles do
+    put :bet_yes, :on => :collection
+  end
 
   root 'welcome#index'
 end

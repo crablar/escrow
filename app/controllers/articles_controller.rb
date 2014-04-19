@@ -5,6 +5,7 @@ class ArticlesController < ApplicationController
 
   def create
     @article = Article.new(article_params)
+    @article.update_attribute(:total_bets, 0)
 
     if @article.save
       redirect_to @article
@@ -19,6 +20,10 @@ class ArticlesController < ApplicationController
 
   def index
     @articles = Article.all
+  end
+
+  def bet_yes
+    @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
   end
 
   private
