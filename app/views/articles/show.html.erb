@@ -3,11 +3,12 @@
     <h1><%= @article.title %></h1>
     <div class="row">
       <div class="col-md-12">
-        <button type="button" class="btn btn-success" style="margin-right: 4rem;">Yes, bet $1</button>
+        <button type="button" class="btn btn-success" style="margin-right: 4rem;">Yes, bet $<%= @article.min_bet %></button>
         <img class="vote-banner" src="/assets/spiderman.jpg">
-        <button type="button" class="btn btn-danger" style="margin-left: 4rem;">No, bet $1</button>
+        <button type="button" class="btn btn-danger" style="margin-left: 4rem;">No, bet $<%= @article.min_bet %></button>
       </div>
     </div>
-    <h1 class="total"><%= @article.min_bet %></h1>
+    <h1>Total Bets</h1>
+    <h1 class="total">$<%= @article.total_bets %></h1>
   </div>
 </div>
