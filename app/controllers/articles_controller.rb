@@ -6,6 +6,7 @@ class ArticlesController < ApplicationController
   def create
     @article = Article.new(article_params)
     @article.update_attribute(:total_bets, 0)
+    @article.update_attribute(:creator_id, params[:creator_id])
 
     if @article.save
       redirect_to @article
