@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140418235758) do
+ActiveRecord::Schema.define(version: 20140419175104) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20140418235758) do
     t.integer  "min_bet"
     t.float    "TotalBets"
     t.float    "total_bets"
+    t.float    "yes_bet_totals"
+    t.float    "no_bet_totals"
   end
 
   create_table "users", force: true do |t|
