@@ -22,6 +22,7 @@ class ArticlesController < ApplicationController
     @articles = Article.all
   end
 
+  #because yes
   def bet_yes
     @article = Article.find(params[:article_id])
     @active_user = User.find(params[:active_user_id])
@@ -48,6 +49,6 @@ class ArticlesController < ApplicationController
     def article_params
         params.require(:article).permit(:title, :min_bet, :time_to_expiration)
     end
-  
+
 
 end
