@@ -4,9 +4,9 @@
     <h1><%= @article.title %></h1>
     <div class="row">
       <div class="col-md-12">
-        <%= button_to "Yes", {:controller => :articles, :action => :bet_yes, :article_id => @article.id,}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
+        <%= button_to "Yes, bet #{@article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => @article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
         <img class="vote-banner" src="/assets/spiderman.jpg">
-        <%= button_to "No", {:controller => :articles, :action => :bet_no, :article_id => @article.id,}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
+        <%= button_to "No, bet #{@article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => @article.id, :active_user_id => current_user.id}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
       </div>
     </div>
     <h1>Total Bets</h1>

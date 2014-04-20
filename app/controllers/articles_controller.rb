@@ -25,6 +25,8 @@ class ArticlesController < ApplicationController
 
   def bet_yes
     @article = Article.find(params[:article_id])
+    @active_user = User.find(params[:active_user_id])
+    @active_user.update_attribute(:balance, @active_user.balance - @article.min_bet)
     @article.update_attribute(:yes_bet_total, @article.yes_bet_total + @article.min_bet)
     @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
     redirect_to @article
@@ -32,6 +34,8 @@ class ArticlesController < ApplicationController
 
   def bet_no
     @article = Article.find(params[:article_id])
+    @active_user = User.find(params[:active_user_id])
+    @active_user.update_attribute(:balance, @active_user.balance - @article.min_bet)
     @article.update_attribute(:no_bet_total, @article.no_bet_total + @article.min_bet)
     @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
     redirect_to @article
