@@ -2,6 +2,7 @@
   <%= debug @article %>
   <div class="betbox col-md-12 text-center">
     <h1><%= @article.title %></h1>
+    <h1><%= @article.time_to_expiration %> seconds remaining</h1>
     <div class="row">
       <div class="col-md-12">
         <%= button_to "Yes, bet #{@article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => @article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>

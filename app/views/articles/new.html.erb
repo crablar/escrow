@@ -11,6 +11,11 @@
     </p>
 
     <p>
+      <%= f.label :time_to_expiration %><br>
+      <%= f.select :time_to_expiration, options_for_select([["1 minute", 60], ["10 minutes", 600]]) %>
+    </p>
+
+    <p>
       <%= f.submit %>
     </p>
 <% end %>

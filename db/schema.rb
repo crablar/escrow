@@ -11,17 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140420053749) do
+ActiveRecord::Schema.define(version: 20140420163655) do
 
   create_table "articles", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "min_bet"
     t.float    "total_bets"
-    t.integer  "creator_id",    default: -1
-    t.float    "yes_bet_total", default: 0.0
-    t.float    "no_bet_total",  default: 0.0
+    t.integer  "creator_id",         default: -1
+    t.float    "yes_bet_total",      default: 0.0
+    t.float    "no_bet_total",       default: 0.0
     t.string   "title"
+    t.integer  "time_to_expiration", default: 60
   end
 
   create_table "users", force: true do |t|
