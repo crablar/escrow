@@ -50,5 +50,4 @@ class ArticlesController < ApplicationController
         params.require(:article).permit(:title, :min_bet, :time_to_expiration)
     end
 
-
 end
