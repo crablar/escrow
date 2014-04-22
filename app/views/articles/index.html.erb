@@ -19,9 +19,15 @@
             update_time_remaining(article);
           </script>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-2 col-md-offset-2">
               <%= button_to "Yes, bet #{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
+            </div>
+            
+            <div class="col-md-4">
               <img class="vote-banner" src="/assets/spiderman.jpg">
+            </div>
+            
+            <div class="col-md-2">
               <%= button_to "No, bet #{article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
             </div>
           </div>
