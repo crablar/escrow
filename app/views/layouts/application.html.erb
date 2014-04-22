@@ -71,7 +71,7 @@
             </li>
           </ul>-->
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Home</a></li>
+            <li><%= link_to "Home", articles_path %></li>
             <li><%= button_to "Make a bet", new_article_path, {class: "btn btn-default", id: "make_bet", :method => :get} %></li>
           </ul>
         </div><!--/.nav-collapse -->
