@@ -3,6 +3,26 @@
   <div class="betbox col-md-12 text-center">
     <h1><%= @article.title %></h1>
     <h1><%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> seconds remaining</h1>
+    <h3>Counting down 1 minute (60 seconds)</h3>
+    <div id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
+    <button class="btn btn-success startTimer">Start Timer</button>
+    <button class="btn btn-danger stopTimer">Stop Timer</button>
+    <hr>
+
+    <script type="text/javascript">
+        $(function(){
+            $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+        });
+
+        // Start and stop are methods applied on the public TimeCircles instance
+        $(".startTimer").click(function() {
+            $("#CountDownTimer").TimeCircles().start();
+        });
+        $(".stopTimer").click(function() {
+            $("#CountDownTimer").TimeCircles().stop();
+        });
+    </script>
+
     <div class="row">
       	<div class="col-md-2 col-md-offset-2">
         	<%= button_to "Yes, bet #{@article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => @article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
