@@ -1,9 +1,11 @@
 Escrow::Application.routes.draw do
   devise_for :users
-  get 'welcome/index'
   #get 'articles/new'
 
-  resources :articles
+  resources :articles do
+    put :bet_yes, :on => :collection
+    put :bet_no, :on => :collection
+  end
 
-  root 'welcome#index'
+  root 'articles#index'
 end

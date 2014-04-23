@@ -4,12 +4,31 @@
   <% @articles.each do |article| %>
       <div class="row">
         <div class="betbox col-md-12 text-center">
+          <%= debug article %>
+          <h1 hidden="true" id="create_at"><%= article.created_at.to_i %></h1>
+          <h1 hidden="true" id="time_to_expiration"><%= article.time_to_expiration %></h1>
           <h1><%= article.title %></h1>
+          <h1 id="time_remaining"><%= article.time_to_expiration - (DateTime.current.to_i - article.created_at.to_i) %> seconds remaining</h1>
+          <script>
+            var update_time_remaining = function(article){
+                var updated_time = 3;
+                document.getElementById("time_remaining").innerHTML=updated_time;
+                console.log('working');
+                setInterval(update_time_remaining(article), 1000);
+            }
+            update_time_remaining(article);
+          </script>
           <div class="row">
-            <div class="col-md-12">
-              <button type="button" class="btn btn-success" style="margin-right: 4rem;">Yes, bet $<%= article.min_bet %></button>
+            <div class="col-md-2 col-md-offset-2">
+              <%= button_to "Yes, bet #{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
+            </div>
+            
+            <div class="col-md-4">
               <img class="vote-banner" src="/assets/spiderman.jpg">
-              <button type="button" class="btn btn-danger" style="margin-left: 4rem;">No, bet $<%= article.min_bet %></button>
+            </div>
+            
+            <div class="col-md-2">
+              <%= button_to "No, bet #{article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
             </div>
           </div>
             <h1>Total Bets</h1>
@@ -18,3 +37,5 @@
       </div>
   <% end %>
 </table>
+
+

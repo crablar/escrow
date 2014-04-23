@@ -1,17 +1,29 @@
-<%= form_for :article, url: articles_path do |f| %>
-    <p>
-      <%= f.label :title%><br>
-      <%= f.text_area :title %>
-    </p>
+<%= form_for :article, url: articles_path, html: {role: "form", class: "form-horizontal"} do |f| %>
+    <%= hidden_field_tag :creator_id, current_user.id %>
+    <br />
+    <div class="form-group">
+	    <%= f.label :title, :class => "col-sm-2 control-label"%>
+	    <div class="col-sm-5 no-padding">
+	    	<%= f.text_field :title, :class => "form-control" %>
+	    </div>
+	</div>
+    
+    <div class="form-group">
+	    <%= f.label :min_bet, :class => "col-sm-2 control-label"%>
+	    <div class="col-sm-2 no-padding">
+	    	<%= f.text_field :min_bet, :class => "form-control" %>
+	    </div>
+	</div>
+    
 
-    <p>
-      <%= f.label :min_bet %><br>
-      <%= f.text_field :min_bet %>
-    </p>
-
-    <p>
-      <%= f.submit %>
-    </p>
+  <div class="form-group">
+      <%= f.label :time_to_expiration, :class => "col-sm-3 control-label" %>
+      <div class="col-sm-2 no-padding">
+      	<%= f.select :time_to_expiration, options_for_select([["1 minute", 60], ["10 minutes", 600]]), {}, {:class => 'form-control'}%>
+      	</div>
+      	
+      	<%= f.submit "Save article", :class => "btn btn-primary"%>
+   </div>
 <% end %>
 
 <%= link_to 'Back', articles_path %>

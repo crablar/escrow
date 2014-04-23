@@ -33,7 +33,27 @@
   </style>
 </head>
 <body>
-
+<br /><br /><br />
+<hr>
+            <h3>Counting down 1 minute (60 seconds)</h3>
+            <div id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
+            <button class="btn btn-success startTimer">Start Timer</button>
+            <button class="btn btn-danger stopTimer">Stop Timer</button>
+            <hr>
+            
+<script type="text/javascript">
+      $(function(){
+       $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+      });
+      
+      // Start and stop are methods applied on the public TimeCircles instance
+            $(".startTimer").click(function() {
+                $("#CountDownTimer").TimeCircles().start();
+            });
+            $(".stopTimer").click(function() {
+                $("#CountDownTimer").TimeCircles().stop();
+            });
+</script>
 
  <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +91,7 @@
             </li>
           </ul>-->
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Home</a></li>
+            <li><%= link_to "Home", articles_path %></li>
             <li><%= button_to "Make a bet", new_article_path, {class: "btn btn-default", id: "make_bet", :method => :get} %></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -118,7 +138,9 @@
 			<div class="col-lg-3" style="padding-top:50px;">
 			  <p class="text-center"><img class="avatar" src="/assets/avatar.jpg"></p>
 				<p class="text-center">Will</p>
-			</div>
+                <p class="text-center"><%= current_user.balance %></p>
+              <%= debug current_user %>
+            </div>
         
 			<div class="col-lg-9">
 				<div class="main-content">

@@ -19,3 +19,8 @@
 #make_bet {
 	margin-top:8px;
 }
+
+.no-padding {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
