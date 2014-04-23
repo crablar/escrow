@@ -33,7 +33,27 @@
   </style>
 </head>
 <body>
-
+<br /><br /><br />
+<hr>
+            <h3>Counting down 1 minute (60 seconds)</h3>
+            <div id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
+            <button class="btn btn-success startTimer">Start Timer</button>
+            <button class="btn btn-danger stopTimer">Stop Timer</button>
+            <hr>
+            
+<script type="text/javascript">
+      $(function(){
+       $("#CountDownTimer").TimeCircles({ time: { Days: { show: false }, Hours: { show: false } }});
+      });
+      
+      // Start and stop are methods applied on the public TimeCircles instance
+            $(".startTimer").click(function() {
+                $("#CountDownTimer").TimeCircles().start();
+            });
+            $(".stopTimer").click(function() {
+                $("#CountDownTimer").TimeCircles().stop();
+            });
+</script>
 
  <!-- Fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
