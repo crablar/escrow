@@ -8,16 +8,21 @@
           <h1 hidden="true" id="create_at"><%= article.created_at.to_i %></h1>
           <h1 hidden="true" id="time_to_expiration"><%= article.time_to_expiration %></h1>
           <h1><%= article.title %></h1>
-          <h1 id="time_remaining"><%= article.time_to_expiration - (DateTime.current.to_i - article.created_at.to_i) %> seconds remaining</h1>
-          <script>
-            var update_time_remaining = function(article){
-                var updated_time = 3;
-                document.getElementById("time_remaining").innerHTML=updated_time;
-                console.log('working');
-                setInterval(update_time_remaining(article), 1000);
-            }
-            update_time_remaining(article);
-          </script>
+         <div data-timer=<%= article.time_to_expiration - (DateTime.current.to_i - article.created_at.to_i) %> id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
+            <hr>
+            <script type="text/javascript">
+                $(function(){
+                    $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+                });
+
+                // Start and stop are methods applied on the public TimeCircles instance
+                $(".startTimer").click(function() {
+                    $("#CountDownTimer").TimeCircles().start();
+                });
+                $(".stopTimer").click(function() {
+                    $("#CountDownTimer").TimeCircles().stop();
+                });
+            </script>
           <div class="row">
             <div class="col-md-2 col-md-offset-2">
               <%= button_to "Yes, bet #{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>

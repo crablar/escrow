@@ -2,13 +2,8 @@
   <%= debug @article %>
   <div class="betbox col-md-12 text-center">
     <h1><%= @article.title %></h1>
-    <h1><%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> seconds remaining</h1>
-    <h3>Counting down 1 minute (60 seconds)</h3>
-    <div id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
-    <button class="btn btn-success startTimer">Start Timer</button>
-    <button class="btn btn-danger stopTimer">Stop Timer</button>
+    <div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
     <hr>
-
     <script type="text/javascript">
         $(function(){
             $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
@@ -35,9 +30,9 @@
         <div class="col-md-2">
         	<%= button_to "No, bet #{@article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => @article.id, :active_user_id => current_user.id}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
       	</div>
+        <h1>Total Bets</h1>
+        <h1 class="total">$<%= @article.total_bets %></h1>
       </div>
     </div>
-    <h1>Total Bets</h1>
-    <h1 class="total">$<%= @article.total_bets %></h1>
   </div>
 </div>
