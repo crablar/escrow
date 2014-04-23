@@ -1,12 +1,14 @@
+<!-- This page shows a single bet, and all its details (potentially comments/forum) -->
 <div class="row">
   <%= debug @article %>
   <div class="betbox col-md-12 text-center">
+    <h1 hidden="true" id=timer_title><%=@article.timer_title%></h1>
     <h1><%= @article.title %></h1>
-    <div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
+    <div class=<%= @article.timer_title %>> data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> style="width: 200px; height: 80px;"></div>
     <hr>
     <script type="text/javascript">
         $(function(){
-            $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+            $("#" + document.getElementById("timer_title").innerHTML).TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
         });
 
         // Start and stop are methods applied on the public TimeCircles instance

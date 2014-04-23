@@ -7,6 +7,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(article_params)
     @article.update_attribute(:total_bets, 0)
     @article.update_attribute(:creator_id, params[:creator_id])
+    @article.update_attribute(:timer_title, @article.title + " timer")
     if @article.save
       redirect_to @article
     else

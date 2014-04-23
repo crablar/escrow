@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140420163655) do
+ActiveRecord::Schema.define(version: 20140423231840) do
 
   create_table "articles", force: true do |t|
     t.datetime "created_at"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20140420163655) do
     t.float    "no_bet_total",       default: 0.0
     t.string   "title"
     t.integer  "time_to_expiration", default: 60
+    t.string   "timer_title"
   end
 
   create_table "users", force: true do |t|
