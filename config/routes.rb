@@ -1,4 +1,6 @@
 Escrow::Application.routes.draw do
+  resources :bets
+
   devise_for :users
   #get 'articles/new'
 
