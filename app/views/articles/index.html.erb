@@ -9,19 +9,19 @@
           <h1 hidden="true" id="create_at"><%= article.created_at.to_i %></h1>
           <h1 hidden="true" id="time_to_expiration"><%= article.time_to_expiration %></h1>
           <h1><%= article.title %></h1>
-         <div data-timer=<%= article.time_to_expiration - (DateTime.current.to_i - article.created_at.to_i) %> id="CountDownTimer" data-timer="60" style="width: 200px; height: 80px;"></div>
+          <div data-id="<%= article.id %>" data-timer="<%= article.time_to_expiration - (DateTime.current.to_i - article.created_at.to_i) %>" class="timer" style="width: 200px; height: 80px;"></div>
             <hr>
             <script type="text/javascript">
                 $(function(){
-                    $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+                    $(".timer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
                 });
 
                 // Start and stop are methods applied on the public TimeCircles instance
                 $(".startTimer").click(function() {
-                    $("#CountDownTimer").TimeCircles().start();
+                    $(".timer").TimeCircles().start();
                 });
                 $(".stopTimer").click(function() {
-                    $("#CountDownTimer").TimeCircles().stop();
+                    $(".timer").TimeCircles().stop();
                 });
             </script>
           <div class="row">
