@@ -27,6 +27,9 @@ class ArticlesController < ApplicationController
   #because yes
   def bet_yes
     @article = Article.find(params[:article_id])
+    if (check_expiration(@article))
+      return
+    end
     check_expiration(@article)
     @active_user = User.find(params[:active_user_id])
     @bet = Bet.new
@@ -43,8 +46,9 @@ class ArticlesController < ApplicationController
 
   def bet_no
     @article = Article.find(params[:article_id])
-    check_expiration(@article)
-    Rails.logger.debug("debug::" + @article.to_s)
+    if (check_expiration(@article))
+      return
+    end
     @active_user = User.find(params[:active_user_id])
     @bet = Bet.new
     @bet.update_attribute(:user_id, params[:active_user_id])
@@ -69,7 +73,9 @@ class ArticlesController < ApplicationController
         article.update_attribute(:winning_side, "no")
       end
       distribute_winnings(article)
+      true
     end
+    false
   end
 
   private
@@ -78,22 +84,25 @@ class ArticlesController < ApplicationController
     end
 
     def distribute_winnings(article)
-      Rails.logger.debug("debug:: article id" + article.article_id)
-      Rails.logger.debug("debug:: user id" + article.user_id)
-      if(article.winning_side == ("yes"))
+      if(article.winning_side == "yes")
         number_of_winning_bets = article.yes_bet_total / article.min_bet
-        winnings_per_winner = article.no_bet_total / number_of_winning_bets
       else
-        number_of_winning_bets = article.no_bet_total / article.min_bet
-        winnings_per_winner = article.yes_bet_total / number_of_winning_bets
+        if(article.winning_side == "no")
+          number_of_winning_bets = article.no_bet_total / article.min_bet
+        else
+          number_of_winning_bets = article.total_bets / article.min_bet
+        end
       end
-      Bet.where(:article_id => params[:article_id]).each do |bet|
+      winnings_per_winner = article.total_bets / number_of_winning_bets
+      Bet.where(article_id: params[:article_id]).each do |bet|
         is_winning_bet = (bet.is_yes and article.winning_side == "yes") or (!bet.is_yes and article.winning_side == "no")
         if(article.winning_side == "draw" or is_winning_bet)
           user_id = bet.user_id
-          Rails.logger.debug("debug::" + user_id)
           @user = User.find(user_id)
+          puts("*****WINNINGS PER WINNER" + winnings_per_winner.to_s)
+          puts("*****USER BALANCE BEFORE " + @user.balance.to_s)
           @user.update_attribute(:balance, @user.balance + winnings_per_winner)
+          puts("*****USER BALANCE after " + @user.balance.to_s)
         end
       end
     end
