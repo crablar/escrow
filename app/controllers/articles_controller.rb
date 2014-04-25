@@ -21,50 +21,50 @@ class ArticlesController < ApplicationController
   end
 
   def index
-    @articles = Article.all
+    @articles = Article.all.sort_by{ |article| article.created_at}.reverse
   end
 
   #because yes
   def bet_yes
     @article = Article.find(params[:article_id])
-    if (check_expiration(@article))
-      return
-    end
-    check_expiration(@article)
-    @active_user = User.find(params[:active_user_id])
-    @bet = Bet.new
-    @bet.update_attribute(:user_id, params[:active_user_id])
-    @bet.update_attribute(:article_id, @article.id)
-    @bet.update_attribute(:is_yes, true)
-    if(@active_user.balance - @article.min_bet >= 0)
-      @active_user.update_attribute(:balance, @active_user.balance - @article.min_bet)
-      @article.update_attribute(:yes_bet_total, @article.yes_bet_total + @article.min_bet)
-      @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
+    if !(check_expiration(@article))
+      @active_user = User.find(params[:active_user_id])
+      @bet = Bet.new
+      @bet.update_attribute(:user_id, params[:active_user_id])
+      @bet.update_attribute(:article_id, @article.id)
+      @bet.update_attribute(:is_yes, true)
+      if(@active_user.balance - @article.min_bet >= 0)
+        @active_user.update_attribute(:balance, @active_user.balance - @article.min_bet)
+        @article.update_attribute(:yes_bet_total, @article.yes_bet_total + @article.min_bet)
+        @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
+      end
     end
     redirect_to @article
   end
 
   def bet_no
     @article = Article.find(params[:article_id])
-    if (check_expiration(@article))
-      return
-    end
-    @active_user = User.find(params[:active_user_id])
-    @bet = Bet.new
-    @bet.update_attribute(:user_id, params[:active_user_id])
-    @bet.update_attribute(:article_id, @article.id)
-    @bet.update_attribute(:is_yes, false)
-    if(@active_user.balance - @article.min_bet >= 0)
-      @active_user.update_attribute(:balance, @active_user.balance - @article.min_bet)
-      @article.update_attribute(:no_bet_total, @article.no_bet_total + @article.min_bet)
-      @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
+    if !(check_expiration(@article))
+      @active_user = User.find(params[:active_user_id])
+      @bet = Bet.new
+      @bet.update_attribute(:user_id, params[:active_user_id])
+      @bet.update_attribute(:article_id, @article.id)
+      @bet.update_attribute(:is_yes, false)
+      if(@active_user.balance - @article.min_bet >= 0)
+        @active_user.update_attribute(:balance, @active_user.balance - @article.min_bet)
+        @article.update_attribute(:no_bet_total, @article.no_bet_total + @article.min_bet)
+        @article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
+      end
     end
     redirect_to @article
   end
 
   def check_expiration(article)
-    expired = DateTime.current.to_i - article.created_at.to_i > article.time_to_expiration
-    if(expired && !article.expired)
+    if(article.expired?)
+      return true
+      puts "*****************WdddddTf " + article.expired?.to_s
+    end
+    if(DateTime.current.to_i - article.created_at.to_i > article.time_to_expiration)
       article.update_attribute(:expired, true)
       if(article.yes_bet_total > article.no_bet_total)
         article.update_attribute(:winning_side, "yes")

@@ -1,6 +1,6 @@
 <!-- This page shows a single bet, and all its details (potentially comments/forum) -->
 <div class="row">
-  <%= debug @article %>
+  <!--%= debug @article %-->
   <div class="betbox col-md-12 text-center">
     <h1><%= @article.title %></h1>
     <div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> id="CountDownTimer" style="width: 200px; height: 80px;"></div>
