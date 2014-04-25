@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424172150) do
+ActiveRecord::Schema.define(version: 20140424192234) do
 
   create_table "articles", force: true do |t|
     t.datetime "created_at"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20140424172150) do
     t.string   "title"
     t.integer  "time_to_expiration", default: 60
     t.boolean  "expired",            default: false
+    t.string   "winning_side",       default: "draw"
   end
 
   create_table "bets", force: true do |t|
