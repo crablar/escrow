@@ -5,7 +5,7 @@
   <% @articles.each do |article| %>
       <div class="row">
         <div class="betbox col-md-12 text-center">
-          <!--%= debug article %-->
+          <%= debug article %>
           <h1 hidden="true" id="create_at"><%= article.created_at.to_i %></h1>
           <h1 hidden="true" id="time_to_expiration"><%= article.time_to_expiration %></h1>
           <a style="font-size: 65px; text-decoration: none" href="/articles/<%= article.id %>"><%= article.title %></a>

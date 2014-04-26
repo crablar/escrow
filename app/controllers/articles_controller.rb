@@ -8,6 +8,8 @@ class ArticlesController < ApplicationController
     @article.update_attribute(:total_bets, 0)
     @article.update_attribute(:creator_id, params[:creator_id])
     @article.update_attribute(:expired, false)
+    @article_following = ArticleToFollower.new(article_id: @article.id, user_id: params[:creator_id])
+    @article_following.save
     if @article.save
       redirect_to @article
     else
@@ -21,12 +23,14 @@ class ArticlesController < ApplicationController
   end
 
   def index
-    @articles = Article.all.sort_by{ |article| article.created_at}.reverse
+    @articles = Article.where(expired: false).sort_by{ |article| article.created_at}.reverse
   end
 
   #because yes
   def bet_yes
     @article = Article.find(params[:article_id])
+    @article_following = ArticleToFollower.new(article_id: @article.id, user_id: params[:active_user_id])
+    @article_following.save
     if !(check_expiration(@article))
       @active_user = User.find(params[:active_user_id])
       @bet = Bet.new
@@ -44,6 +48,7 @@ class ArticlesController < ApplicationController
 
   def bet_no
     @article = Article.find(params[:article_id])
+    @article_following = ArticleToFollower.new(article_id: @article.id, user_id: params[:active_user_id])
     if !(check_expiration(@article))
       @active_user = User.find(params[:active_user_id])
       @bet = Bet.new
@@ -80,8 +85,8 @@ class ArticlesController < ApplicationController
   end
 
   def check_expiration_all
-    Article.where(expired: false).each do |article|
-      check_expiration(article)
+    ArticleToFollower.where(user_id: params[:active_user_id]).each do |article_id|
+      check_expiration(Article.find(article_id))
     end
   end
 
@@ -91,8 +96,10 @@ class ArticlesController < ApplicationController
     end
 
     def distribute_winnings(article)
+      puts("*********DISTRIBUTING BETS*******")
       if(article.winning_side == "yes")
         number_of_winning_bets = article.yes_bet_total / article.min_bet
+        puts("*********number bets = " + number_of_winning_bets.to_s)
       else
         if(article.winning_side == "no")
           number_of_winning_bets = article.no_bet_total / article.min_bet
@@ -101,12 +108,13 @@ class ArticlesController < ApplicationController
         end
       end
       winnings_per_winner = article.total_bets / number_of_winning_bets
+      puts("*****WINNINGS PER WINNER" + winnings_per_winner.to_s)
       Bet.where(article_id: params[:article_id]).each do |bet|
         is_winning_bet = (bet.is_yes and article.winning_side == "yes") or (!bet.is_yes and article.winning_side == "no")
         if(article.winning_side == "draw" or is_winning_bet)
           user_id = bet.user_id
           @user = User.find(user_id)
-          puts("*****WINNINGS PER WINNER" + winnings_per_winner.to_s)
+          puts("*****USER GETTING PAID: " + @user.id.to_s)
           puts("*****USER BALANCE BEFORE " + @user.balance.to_s)
           @user.update_attribute(:balance, @user.balance + winnings_per_winner)
           puts("*****USER BALANCE after " + @user.balance.to_s)
