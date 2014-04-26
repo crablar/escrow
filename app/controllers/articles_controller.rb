@@ -20,6 +20,10 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.find(params[:id])
     check_expiration(@article)
+    respond_to do |format|
+      format.html
+      format.json { render json: @article }
+    end
   end
 
   def index
