@@ -60,6 +60,7 @@ class ArticlesController < ApplicationController
   end
 
   def check_expiration(article)
+    puts "\n\n\n\n***expiration BEING CHECKDE"
     if(article.expired?)
       return true
       puts "*****************WdddddTf " + article.expired?.to_s
@@ -76,6 +77,12 @@ class ArticlesController < ApplicationController
       true
     end
     false
+  end
+
+  def check_expiration_all
+    Article.where(expired: false).each do |article|
+      check_expiration(article)
+    end
   end
 
   private

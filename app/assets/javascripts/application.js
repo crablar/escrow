@@ -15,3 +15,10 @@
 //= require turbolinks
 //= require_tree .
 //= require bootstrap.min
+
+var check_expiration = function() {
+    $.ajax("articles/check_expiration_all");
+}
+
+window.setInterval(check_expiration, 1000);
+
