@@ -5,18 +5,42 @@
     <h1><%= @article.title %></h1>
     <div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> id="CountDownTimer" style="width: 200px; height: 80px;"></div>
     <hr>
+
+    <div class="row">
+      <div class="col-md-2 col-md-offset-2">
+        <%= button_to "Yes, bet $#{@article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => @article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{@article.id} btn-yes", class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
+      </div>
+
+      <div class="col-md-4">
+        <img class="vote-banner" src="/assets/spiderman.jpg">
+      </div>
+
+      <div class="col-md-2">
+        <%= button_to "No, bet $#{@article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => @article.id, :active_user_id => current_user.id}, {:method => :put, :id => "article-#{@article.id} btn-no", class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
+      </div>
+      <h1>Total Bets</h1>
+      <h1 class="total">$<%= @article.total_bets %></h1>
+    </div>
+  </div>
+
     <script type="text/javascript">
+
+
         $(function(){
             // TODO: won't be able to use ID when there is more than one set of time circles on the page
             $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
             $('#CountDownTimer').TimeCircles().addListener(function (unit, value, total) {
+              console.log("total " + total);
               if (total <= 0) {
-                $.ajax('<%= @article.id %>.json', {
+                  console.log("inside if statement");
+                  $.ajax('<%= @article.id %>.json', {
                   success: function(data, status, jqXHR) {
                     if (data.expired) {
                       // Disable the buttons so you can't bet on it anymore
                       $('.article-<%= @article.id %> btn').prop('disabled', true);
                       // TODO: show the result of the bet
+                        alert("wtf");
+                        console.log("aw yea");
                     }
                   },
                   error: function(jqXHR, status, error) {
@@ -36,21 +60,6 @@
         });
     </script>
 
-    <div class="row">
-      	<div class="col-md-2 col-md-offset-2">
-        	<%= button_to "Yes, bet $#{@article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => @article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
-        </div>
 
-        <div class="col-md-4">
-        	<img class="vote-banner" src="/assets/spiderman.jpg">
-         </div>
-
-        <div class="col-md-2">
-        	<%= button_to "No, bet $#{@article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => @article.id, :active_user_id => current_user.id}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
-      	</div>
-        <h1>Total Bets</h1>
-        <h1 class="total">$<%= @article.total_bets %></h1>
-      </div>
-    </div>
   </div>
 </div>

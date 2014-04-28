@@ -27,6 +27,8 @@ class ArticlesController < ApplicationController
   end
 
   def index
+    puts "debug in index"
+    check_expiration_all
     @articles = Article.where(expired: false).sort_by{ |article| article.created_at}.reverse
   end
 
@@ -69,27 +71,33 @@ class ArticlesController < ApplicationController
   end
 
   def check_expiration(article)
-    puts "\n\n\n\n***expiration BEING CHECKDE"
+    puts "debug expiration being checked..."
     if(article.expired?)
+      puts "debug article expired " + article.expired.to_s
       return true
-      puts "*****************WdddddTf " + article.expired?.to_s
     end
     if(DateTime.current.to_i - article.created_at.to_i > article.time_to_expiration)
       article.update_attribute(:expired, true)
       if(article.yes_bet_total > article.no_bet_total)
+        puts "yes wins debug"
         article.update_attribute(:winning_side, "yes")
       end
       if(article.yes_bet_total < article.no_bet_total)
+        puts "no wins debug"
         article.update_attribute(:winning_side, "no")
       end
       distribute_winnings(article)
-      true
+      return true
     end
-    false
+    puts "debug not expired"
+    return false
   end
 
   def check_expiration_all
-    ArticleToFollower.where(user_id: params[:active_user_id]).each do |article_id|
+    puts "debug check exp all"
+    ArticleToFollower.where(user_id: current_user.id).each do |articleToFollower|
+      article_id = articleToFollower.article_id
+      puts "debug checking exp for article " + article_id.to_s
       check_expiration(Article.find(article_id))
     end
   end
@@ -100,7 +108,7 @@ class ArticlesController < ApplicationController
     end
 
     def distribute_winnings(article)
-      puts("*********DISTRIBUTING BETS*******")
+      puts("debug *********DISTRIBUTING BETS*******")
       if(article.winning_side == "yes")
         number_of_winning_bets = article.yes_bet_total / article.min_bet
         puts("*********number bets = " + number_of_winning_bets.to_s)
@@ -112,7 +120,7 @@ class ArticlesController < ApplicationController
         end
       end
       winnings_per_winner = article.total_bets / number_of_winning_bets
-      puts("*****WINNINGS PER WINNER" + winnings_per_winner.to_s)
+      puts("debug *****WINNINGS PER WINNER" + winnings_per_winner.to_s)
       Bet.where(article_id: params[:article_id]).each do |bet|
         is_winning_bet = (bet.is_yes and article.winning_side == "yes") or (!bet.is_yes and article.winning_side == "no")
         if(article.winning_side == "draw" or is_winning_bet)
