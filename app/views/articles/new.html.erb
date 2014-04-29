@@ -19,7 +19,7 @@
   <div class="form-group">
       <%= f.label :time_to_expiration, :class => "col-sm-3 control-label" %>
       <div class="col-sm-2 no-padding">
-      	<%= f.select :time_to_expiration, options_for_select([["10 seconds", 10],["1 minute", 60], ["10 minutes", 600]]), {}, {:class => 'form-control'}%>
+      	<%= f.select :time_to_expiration, options_for_select([["1 second", 1],["10 seconds", 10],["1 minute", 60], ["10 minutes", 600]]), {}, {:class => 'form-control'}%>
       	</div>
       	
       	<%= f.submit "Save article", :class => "btn btn-primary"%>
