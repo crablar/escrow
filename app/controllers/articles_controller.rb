@@ -121,7 +121,7 @@ class ArticlesController < ApplicationController
       end
       winnings_per_winner = article.total_bets / number_of_winning_bets
       puts("debug *****WINNINGS PER WINNER" + winnings_per_winner.to_s)
-      Bet.where(article_id: params[:article_id]).each do |bet|
+      Bet.where(article_id: article.id).each do |bet|
         is_winning_bet = (bet.is_yes and article.winning_side == "yes") or (!bet.is_yes and article.winning_side == "no")
         if(article.winning_side == "draw" or is_winning_bet)
           user_id = bet.user_id
