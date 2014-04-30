@@ -113,12 +113,6 @@
 
     <script type="javascript">
 
-        function check_expiration_async(){
-            $.ajax({url: "#check_expiration_all", type: "GET"});
-            $("#user_balance").load(<%=current_user.balance %>);
-        };
-
-        setInterval("check_expiration_async()", 2000);
 
     </script>
 
