@@ -53,6 +53,7 @@ class ArticlesController < ApplicationController
   end
 
   def bet_no
+    puts "bet no being called..."
     @article = Article.find(params[:article_id])
     @article_following = ArticleToFollower.new(article_id: @article.id, user_id: params[:active_user_id])
     if !(check_expiration(@article))

@@ -1,0 +1,7 @@
+<table>
+  <%=@users.each do |user| %>
+    <div class="row">
+      <p>"<%= user.email %>:<%=user.balance %>"</p>
+    </div>
+  <%= end %>
+</table>

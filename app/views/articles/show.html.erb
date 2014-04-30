@@ -34,7 +34,6 @@
             // TODO: won't be able to use ID when there is more than one set of time circles on the page
             $("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
             $('#CountDownTimer').TimeCircles().addListener(function (unit, value, total) {
-
             console.log("checking exp...");
               if (<%= @article.expired %>) {
                   $.ajax('<%= @article.id %>.json', {
@@ -53,13 +52,6 @@
             }, 'visible');
         });
 
-        // Start and stop are methods applied on the public TimeCircles instance
-        $(".startTimer").click(function() {
-            $("#CountDownTimer").TimeCircles().start();
-        });
-        $(".stopTimer").click(function() {
-            $("#CountDownTimer").TimeCircles().stop();
-        });
     </script>
 
 

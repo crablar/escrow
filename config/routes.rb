@@ -13,5 +13,9 @@ Escrow::Application.routes.draw do
     put :bet_no, :on => :collection
   end
 
+  resources :leaderboards do
+    get '/leaderboards', to: 'leaderboards#index'
+  end
+
   root 'articles#index'
 end
