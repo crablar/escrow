@@ -102,6 +102,11 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def get_user_balance(user_id)
+    puts "wtffff" + User.find(user_id).balance.to_s
+    return User.find(user_id).balance
+  end
+
   private
     def article_params
         params.require(:article).permit(:title, :min_bet, :time_to_expiration)

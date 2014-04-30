@@ -6,6 +6,7 @@ Escrow::Application.routes.draw do
   #get 'articles/new'
 
   post 'articles/check_expiration_all'
+  get 'articles/get_user_balance'
 
   resources :articles do
     put :bet_yes, :on => :collection
