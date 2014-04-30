@@ -24,8 +24,11 @@
   </div>
 
     <script type="text/javascript">
-
-
+        function check_expiration_async(){
+            $.ajax({url: "#check_expiration_all", type: "GET"});
+            $("#user_balance").load(<%=current_user.balance %>);
+        };
+        setInterval("check_expiration_async()", 2000);
 
         $(function(){
             // TODO: won't be able to use ID when there is more than one set of time circles on the page
