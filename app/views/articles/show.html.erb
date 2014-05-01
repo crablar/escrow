@@ -1,6 +1,6 @@
 <!-- This page shows a single bet, and all its details (potentially comments/forum) -->
 <div class="row">
-  <!--%= debug @article %-->
+  <%= debug @article %>
   <div class="betbox col-md-12 text-center article-<%= @article.id %>">
     <h1><%= @article.title %></h1>
     <div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> id="CountDownTimer" style="width: 200px; height: 80px;"></div>
@@ -24,8 +24,10 @@
   </div>
 
     <script type="text/javascript">
+      var technical_debt;
         function check_expiration_async(){
-            $.ajax({url: "#check_expiration_all", type: "GET"});
+            technical_debt = "<%=@_controller.check_expiration_all %>";
+            technical_debt = "<%=@_controller.evaluate_user_bets(current_user.id) %>";
             $("#user_balance").load(<%=@_controller.get_user_balance(current_user.id) %>);
         };
         setInterval("check_expiration_async()", 2000);

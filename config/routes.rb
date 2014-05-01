@@ -6,6 +6,7 @@ Escrow::Application.routes.draw do
   #get 'articles/new'
 
   post 'articles/check_expiration_all'
+  post 'articles/evaluate_user_bets'
   get 'articles/get_user_balance'
 
   resources :articles do
@@ -14,7 +15,7 @@ Escrow::Application.routes.draw do
   end
 
   resources :leaderboards do
-    get '/leaderboards', to: 'leaderboards#index'
+    get :index,:on => :collection
   end
 
   root 'articles#index'
