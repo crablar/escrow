@@ -14,40 +14,40 @@
               <div class="col-md-2 col-md-offset-2">
                 <%= button_to "Yes, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{article.id}-btn-yes", class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
               </div>
+
               <div class="col-md-4">
                 <img class="vote-banner" src="/assets/spiderman.jpg">
               </div>
+
               <div class="col-md-2">
                 <%= button_to "No, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{article.id}-btn-no", class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
               </div>
             </div>
             <script type="text/javascript">
-                function check_expiration_async(){
-                    $.ajax({url: "#check_expiration_all", type: "GET"});
-                    $("#user_balance").load(<%=current_user.balance %>);
-                };
-                setInterval("check_expiration_async()", 2000);
-
                 $(function(){
                     $(".timer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
-                    $('#CountDownTimer').TimeCircles().addListener(function (unit, value, total) {
-                        console.log("checking exp...");
-                        if (<%= article.expired %>) {
-                            $.ajax('<%= article.id %>.json', {
-                                success: function(data, status, jqXHR) {
-                                    console.log("success");
-                                    // Disable the buttons so you can't bet on it anymore
-                                    $('#article-<%= article.id %>-btn-yes').prop('disabled', true);
-                                    $('#article-<%= article.id %>-btn-no').prop('disabled', true);
-                                    // TODO: show the result of the bet
-                                },
-                                error: function(jqXHR, status, error) {
-                                    console.log("error: " + status.toString());
-                                }
-                            });
-                        }
-                    }, 'visible');
                 });
+                function check_expiration_async(){
+                    $.ajax({url: '/#check_expiration_all', type: 'get'});
+                    // TODO /#evaluate_user_bets isn't working--problem with routes?
+                    $.ajax({url: '/#evaluate_user_bets', type: 'get'});
+                    $("#user_balance").load(<%=@_controller.get_user_balance(current_user.id) %>);
+                    if (<%= article.expired %>) {
+                        $.ajax('<%= article.id %>.json', {
+                            success: function(data, status, jqXHR) {
+                                console.log("success");
+                                // Disable the buttons so you can't bet on it anymore
+                                $('#article-<%= article.id %>-btn-yes').prop('disabled', true);
+                                $('#article-<%= article.id %>-btn-no').prop('disabled', true);
+                                // TODO: show the result of the bet
+                            },
+                            error: function(jqXHR, status, error) {
+                                console.log("error: " + status.toString());
+                            }
+                        });
+                    }
+                };
+                setInterval("check_expiration_async()", 2000);
 
             </script>
 
