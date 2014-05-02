@@ -89,7 +89,7 @@ class ArticlesController < ApplicationController
   end
 
   def check_expiration_all
-    puts "lol"
+    evaluate_user_bets
     ArticleToFollower.where(user_id: current_user.id).each do |articleToFollower|
       article_id = articleToFollower.article_id
       check_expiration(Article.find(article_id))
@@ -100,17 +100,22 @@ class ArticlesController < ApplicationController
     return User.find(user_id).balance
   end
 
-  def evaluate_user_bets(user_id)
+  def evaluate_user_bets
+    puts "debug evaluateing"
+    user_id = current_user.id
     Bet.where({user_id: user_id, was_evaluated: false}).each do |bet|
+      "debug iterating on bets " + bet.id.to_s
       article = Article.find(bet.article_id)
+      puts "debug in here"
       if(article.expired?)
-        is_winning_bet = (bet.is_yes and article.winning_side == "yes") or (!bet.is_yes and article.winning_side == "no")
+        is_winning_bet = ((bet.is_yes && article.winning_side == "yes") || (!bet.is_yes && article.winning_side == "no"))
+        puts "debug is_winning bet " + is_winning_bet.to_s
         if(article.winning_side == "draw" or is_winning_bet)
           @user = User.find(user_id)
-          puts("*****USER GETTING PAID: " + @user.id.to_s)
-          puts("*****USER BALANCE BEFORE " + @user.balance.to_s)
+          puts("debug *****USER GETTING PAID: " + @user.id.to_s)
+          puts("debug *****USER BALANCE BEFORE " + @user.balance.to_s)
           @user.update_attribute(:balance, @user.balance + article.winnings_per_winner)
-          puts("*****USER BALANCE after " + @user.balance.to_s)
+          puts("debug *****USER BALANCE after " + @user.balance.to_s)
         end
       bet.update_attribute(:was_evaluated, true)
       end
