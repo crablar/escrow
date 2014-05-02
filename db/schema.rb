@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140426055704) do
+ActiveRecord::Schema.define(version: 20140501231959) do
 
   create_table "article_to_followers", force: true do |t|
     t.integer  "article_id"
@@ -25,13 +25,14 @@ ActiveRecord::Schema.define(version: 20140426055704) do
     t.datetime "updated_at"
     t.integer  "min_bet"
     t.float    "total_bets"
-    t.integer  "creator_id",         default: -1
-    t.float    "yes_bet_total",      default: 0.0
-    t.float    "no_bet_total",       default: 0.0
+    t.integer  "creator_id",          default: -1
+    t.float    "yes_bet_total",       default: 0.0
+    t.float    "no_bet_total",        default: 0.0
     t.string   "title"
-    t.integer  "time_to_expiration", default: 60
-    t.boolean  "expired",            default: false
-    t.string   "winning_side",       default: "draw"
+    t.integer  "time_to_expiration",  default: 60
+    t.boolean  "expired",             default: false
+    t.string   "winning_side",        default: "draw"
+    t.float    "winnings_per_winner", default: 0.0
   end
 
   create_table "bets", force: true do |t|
@@ -40,6 +41,7 @@ ActiveRecord::Schema.define(version: 20140426055704) do
     t.boolean  "is_yes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "was_evaluated", default: false
   end
 
   create_table "users", force: true do |t|

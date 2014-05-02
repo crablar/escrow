@@ -4,39 +4,53 @@
 
   <% @articles.each do |article| %>
       <div class="row">
-        <div class="betbox col-md-12 text-center">
+        <div class="betbox col-md-12 text-center article-<%= article.id %>">
           <%= debug article %>
-          <h1 hidden="true" id="create_at"><%= article.created_at.to_i %></h1>
-          <h1 hidden="true" id="time_to_expiration"><%= article.time_to_expiration %></h1>
           <a style="font-size: 65px; text-decoration: none" href="/articles/<%= article.id %>"><%= article.title %></a>
           <div data-id="<%= article.id %>" data-timer="<%= article.time_to_expiration - (DateTime.current.to_i - article.created_at.to_i) %>" class="timer" style="width: 200px; height: 80px;"></div>
             <hr>
+
+            <div class="row">
+              <div class="col-md-2 col-md-offset-2">
+                <%= button_to "Yes, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{article.id}-btn-yes", class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
+              </div>
+
+              <div class="col-md-4">
+                <img class="vote-banner" src="/assets/spiderman.jpg">
+              </div>
+
+              <div class="col-md-2">
+                <%= button_to "No, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{article.id}-btn-no", class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
+              </div>
+            </div>
             <script type="text/javascript">
                 $(function(){
                     $(".timer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
                 });
+                function check_expiration_async(){
+                    $.ajax({url: '/#check_expiration_all', type: 'get'});
+                    // TODO /#evaluate_user_bets isn't working--problem with routes?
+                    $.ajax({url: '/#evaluate_user_bets', type: 'get'});
+                    $("#user_balance").load(<%=@_controller.get_user_balance(current_user.id) %>);
+                    if (<%= article.expired %>) {
+                        $.ajax('<%= article.id %>.json', {
+                            success: function(data, status, jqXHR) {
+                                console.log("success");
+                                // Disable the buttons so you can't bet on it anymore
+                                $('#article-<%= article.id %>-btn-yes').prop('disabled', true);
+                                $('#article-<%= article.id %>-btn-no').prop('disabled', true);
+                                // TODO: show the result of the bet
+                            },
+                            error: function(jqXHR, status, error) {
+                                console.log("error: " + status.toString());
+                            }
+                        });
+                    }
+                };
+                setInterval("check_expiration_async()", 2000);
 
-                // Start and stop are methods applied on the public TimeCircles instance
-                $(".startTimer").click(function() {
-                    $(".timer").TimeCircles().start();
-                });
-                $(".stopTimer").click(function() {
-                    $(".timer").TimeCircles().stop();
-                });
             </script>
-          <div class="row">
-            <div class="col-md-2 col-md-offset-2">
-              <%= button_to "Yes, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
-            </div>
-            
-            <div class="col-md-4">
-              <img class="vote-banner" src="/assets/spiderman.jpg">
-            </div>
-            
-            <div class="col-md-2">
-              <%= button_to "No, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
-            </div>
-          </div>
+
             <h1>Total Bets</h1>
             <h1 class="total">$<%= article.total_bets %></h1>
         </div>
