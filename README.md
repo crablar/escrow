@@ -14,3 +14,4 @@ json 1.8.1 currently has a bug with the latest version of Clang. See https://git
 Run database migrations
 
 `rake db:migrate RAILS_ENV=development`
+

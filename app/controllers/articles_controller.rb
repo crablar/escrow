@@ -124,7 +124,7 @@ class ArticlesController < ApplicationController
 
   private
     def article_params
-        params.require(:article).permit(:title, :min_bet, :time_to_expiration)
+        params.require(:article).permit(:title, :min_bet, :time_to_expiration, :topic)
     end
 
     def set_winnings_per_winner(article)
