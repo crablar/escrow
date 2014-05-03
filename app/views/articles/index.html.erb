@@ -1,5 +1,14 @@
 <!-- All active bets in a users feed are visible on this page -->
 
+<style>
+	.btn-bet-yes {
+		margin-right: 4rem;
+	}
+	.btn-bet-no {
+		margin-left: 4rem;
+	}
+</style>
+
 <% @articles.each do |article| %>
 	<div class="row">
 		<div class="betbox col-md-12 text-center article-<%= article.id %>">
@@ -10,7 +19,9 @@
 
 			<div class="row">
 				<div class="col-md-2 col-md-offset-2">
-					<%= button_to "Yes, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{article.id}-btn-yes", class: 'btn btn-success', style: 'margin-right: 4rem;'}%>
+					<button class="btn btn-success btn-bet-yes" data-id="<%= article.id %>">
+						Yes, bet $<%= article.min_bet %>
+					</button>
 				</div>
 
 				<div class="col-md-4">
@@ -18,36 +29,9 @@
 				</div>
 
 				<div class="col-md-2">
-					<%= button_to "No, bet $#{article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => article.id,:active_user_id => current_user.id}, {:method => :put, :id => "article-#{article.id}-btn-no", class: 'btn btn-danger', style: 'margin-left: 4rem;'}%>
+					<button class="btn btn-danger btn-bet-no" data-id="<%= article.id %>">No, bet $<%= article.min_bet %></button>
 				</div>
 			</div>
-			<script type="text/javascript">
-				$(function() {
-					$(".timer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
-				});
-				function check_expiration_async() {
-					$.ajax({url: '/#check_expiration_all', type: 'get'});
-					// TODO /#evaluate_user_bets isn't working--problem with routes?
-					$.ajax({url: '/#evaluate_user_bets', type: 'get'});
-					$("#user_balance").load(<%=@_controller.get_user_balance(current_user.id) %>);
-					if (<%= article.expired %>) {
-						$.ajax('<%= article.id %>.json', {
-							success: function(data, status, jqXHR) {
-								console.log("success");
-								// Disable the buttons so you can't bet on it anymore
-								$('#article-<%= article.id %>-btn-yes').prop('disabled', true);
-								$('#article-<%= article.id %>-btn-no').prop('disabled', true);
-								// TODO: show the result of the bet
-							},
-							error: function(jqXHR, status, error) {
-								console.log("error: " + status.toString());
-							}
-						});
-					}
-				};
-				setInterval("check_expiration_async()", 2000);
-
-			</script>
 
 			<h1>Total Bets</h1>
 			<h1 class="total">$<%= article.total_bets %></h1>
@@ -55,4 +39,75 @@
 	</div>
 <% end %>
 
+<script>
+
+	<% if false %>
+	function check_expiration_async() {
+		$.ajax({url: '/#check_expiration_all', type: 'get'});
+		// TODO /#evaluate_user_bets isn't working--problem with routes?
+		$.ajax({url: '/#evaluate_user_bets', type: 'get'});
+		$("#user_balance").load(<%=@_controller.get_user_balance(current_user.id) %>);
+
+		if (<%= article.expired %>) {
+			$.ajax('<%= article.id %>.json', {
+				success: function(data, status, jqXHR) {
+					console.log("success");
+					// Disable the buttons so you can't bet on it anymore
+					$('#article-<%= article.id %>-btn-yes').prop('disabled', true);
+					$('#article-<%= article.id %>-btn-no').prop('disabled', true);
+					// TODO: show the result of the bet
+				},
+				error: function(jqXHR, status, error) {
+					console.log("error: " + status.toString());
+				}
+			});
+		}
+	}
+	<% end %>
+
+	$(function() {
+
+		$('.btn-bet-yes').click(function() {
+			$.ajax({
+				url: 'articles/bet_yes',
+				type: 'PUT',
+				data: {
+					article_id: $(this).data('id'),
+					active_user_id: <%= current_user.id %>
+				},
+				success: function(data, status) {
+					console.log('success');
+					console.log(data);
+				},
+				error: function(jqXHR, status, error) {
+					console.log('error');
+					console.log(error);
+				}
+			});
+		});
+
+		$('.btn-bet-no').click(function() {
+			$.ajax({
+				url: 'articles/bet_no',
+				type: 'PUT',
+				data: {
+					article_id: $(this).data('id'),
+					active_user_id: <%= current_user.id %>
+				},
+				success: function(data, status) {
+					console.log('success');
+					console.log(data);
+				},
+				error: function(jqXHR, status, error) {
+					console.log('error');
+					console.log(error);
+				}
+			});
+		});
+
+		$(".timer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+
+		//setInterval("check_expiration_async()", 2000);
+	});
+</script>
 
