@@ -1,161 +1,170 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Escrow</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Escrow</title>
+	<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<%= csrf_meta_tags %>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-  <style>
-      img.avatar {
-          width: 100px;
-          height: 100px;
-          border-radius: 5px;
-      }
-      input.search {
-          width: 100%;
-          border-radius: 10px;
-          margin-top: 5rem;
-      }
-      .betbox {
-          border: 1px solid black;
-          margin-top: 2rem;
-      }
-      img.vote-banner {
-          width: 100px;
-          height: 100px;
-          border-radius: 5px;
-      }
-      h1.total {
-          color: green;
-      }
-  </style>
+	<style>
+		img.avatar {
+			width: 100px;
+			height: 100px;
+			border-radius: 5px;
+		}
+
+		input.search {
+			width: 100%;
+			border-radius: 10px;
+			margin-top: 5rem;
+		}
+
+		.betbox {
+			border: 1px solid black;
+			margin-top: 2rem;
+		}
+
+		img.vote-banner {
+			width: 100px;
+			height: 100px;
+			border-radius: 5px;
+		}
+
+		h1.total {
+			color: green;
+		}
+	</style>
 </head>
 <body>
 <br><br><br>
 <hr>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header" style="float:left; width:150px;">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/articles">Escrow</a>
-    </div>
+	<div class="container">
+		<div class="navbar-header" style="float:left; width:150px;">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/articles">Escrow</a>
+		</div>
 
-    <div class="navbar-collapse collapse" style="float:right;">
-      <div id="search" style="float:left; padding-top:8px; width:300px; padding-right:80px;">
-        <input class="form-control" type="text" placeholder="search">
-      </div>
+		<div class="navbar-collapse collapse" style="float:right;">
+			<div id="search" style="float:left; padding-top:8px; width:300px; padding-right:80px;">
+				<input class="form-control" type="text" placeholder="search">
+			</div>
 
-      <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home", articles_path %></li>
-        <li><button class="btn btn-primary" data-target="#betModal" data-toggle="modal">Make a bet</button></li>
-      </ul>
-    </div>
-  </div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><%= link_to "Home", articles_path %></li>
+				<li>
+					<button class="btn btn-primary" data-target="#betModal" data-toggle="modal">Make a bet</button>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
 
 <div class="container">
 
-  <div>
-    <% if user_signed_in? %>
-        <div class="navbar-text pull-right">
-          Logged in as <strong><%= current_user.email %></strong>.
-          <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-        </div>
+	<div>
+		<% if user_signed_in? %>
+			<div class="navbar-text pull-right">
+				Logged in as <strong><%= current_user.email %></strong>.
+				<%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+				<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link' %>
+			</div>
 
-        <div class="row">
-          <div class="col-lg-3" style="padding-top:50px;">
-            <p class="text-center"><img class="avatar" src=<%= current_user.avatar %> ></p>
-            <p class="text-center">Will</p>
-            <p id="user_balance" class="text-center">$<%= current_user.balance.round(2) %></p>
-            <!--%= debug current_user %-->
-          </div>
+			<div class="row">
+				<div class="col-lg-3" style="padding-top:50px;">
+					<p class="text-center"><img class="avatar" src=<%= current_user.avatar %>></p>
 
-          <div class="col-lg-9">
-            <div class="main-content">
-              <%= yield %>
-            </div>
-          </div>
+					<p class="text-center">Will</p>
 
-        </div>
+					<p id="user_balance" class="text-center">$<%= current_user.balance.round(2) %></p>
+					<!--%= debug current_user %-->
+				</div>
 
-    <% else %>
-        <div class="navbar-text pull-right">
-          <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
-          <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-        </div>
-        <%= yield %>
-    <% end %>
+				<div class="col-lg-9">
+					<div class="main-content">
+						<%= yield %>
+					</div>
+				</div>
 
-    <% if notice %>
-        <p class="alert alert-success"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-        <p class="alert alert-danger"><%= alert %></p>
-    <% end %>
-  </div>
+			</div>
 
-  <br><br>
+		<% else %>
+			<div class="navbar-text pull-right">
+				<%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link' %> |
+				<%= link_to "Login", new_user_session_path, :class => 'navbar-link' %>
+			</div>
+			<%= yield %>
+		<% end %>
 
-</div> <!-- /container -->
+		<% if notice %>
+			<p class="alert alert-success"><%= notice %></p>
+		<% end %>
+		<% if alert %>
+			<p class="alert alert-danger"><%= alert %></p>
+		<% end %>
+	</div>
+
+	<br><br>
+
+</div>
+<!-- /container -->
 <% if user_signed_in? %>
+	<div class="modal fade" id="betModal" tabindex="-1" role="dialog" aria-labelledby="betModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="betModalLabel">Make a bet</h4>
+				</div>
+				<%= form_for :article, url: articles_path, html: {role: 'form', class: 'form-horizontal'} do |f| %>
+					<div class="modal-body">
+						<%= hidden_field_tag :creator_id, current_user.id %>
+						<br>
 
-    <div class="modal fade" id="betModal" tabindex="-1" role="dialog" aria-labelledby="betModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="betModalLabel">Make a bet</h4>
-          </div>
-          <%= form_for :article, url: articles_path, html: {role: 'form', class: 'form-horizontal'} do |f| %>
-              <div class="modal-body">
-                <%= hidden_field_tag :creator_id, current_user.id %>
-                <br>
-                <div class="form-group">
-                  <%= f.label :title, :class => 'col-sm-3 control-label'%>
-                  <div class="col-sm-9 no-padding">
-                    <%= f.text_field :title, :class => 'form-control' %>
-                  </div>
-                </div>
+						<div class="form-group">
+							<%= f.label :title, :class => 'col-sm-3 control-label' %>
+							<div class="col-sm-9 no-padding">
+								<%= f.text_field :title, :class => 'form-control' %>
+							</div>
+						</div>
 
-                <div class="form-group">
-                  <%= f.label :min_bet, :class => 'col-sm-3 control-label'%>
-                  <div class="col-sm-9 no-padding">
-                    <%= f.text_field :min_bet, :class => 'form-control' %>
-                  </div>
-                </div>
+						<div class="form-group">
+							<%= f.label :min_bet, :class => 'col-sm-3 control-label' %>
+							<div class="col-sm-9 no-padding">
+								<%= f.text_field :min_bet, :class => 'form-control' %>
+							</div>
+						</div>
 
 
-                <div class="form-group">
-                  <%= f.label :time_to_expiration, :class => 'col-sm-3 control-label' %>
-                  <div class="col-sm-9 no-padding">
-                    <%= f.select :time_to_expiration, options_for_select([['1 second', 1],['10 seconds', 10],['1 minute', 60], ['10 minutes', 600]]), {}, {:class => 'form-control'}%>
-                  </div>
-                </div>
+						<div class="form-group">
+							<%= f.label :time_to_expiration, :class => 'col-sm-3 control-label' %>
+							<div class="col-sm-9 no-padding">
+								<%= f.select :time_to_expiration, options_for_select([['1 second', 1], ['10 seconds', 10], ['1 minute', 60], ['10 minutes', 600]]), {}, {:class => 'form-control'} %>
+							</div>
+						</div>
 
-                <div class="form-group">
-                  <%= f.label :topic, :class => 'col-sm-3 control-label' %>
-                  <div class="col-sm-9 no-padding">
-                    <%= f.select :topic, options_for_select([['---------', '/assets/money.jpg'],['News', '/assets/news.jpg'],['History', '/assets/history.jpg'],['The Internet', '/assets/internet.jpg'],['Food', '/assets/food.jpg'],['Literature', '/assets/literature.jpg'],['Silicon Valley', '/assets/success.jpg'],['Movies', '/assets/hollywood.jpg'],['Music', '/assets/music.jpg'],['Business', '/assets/business.jpg'],['Sports', '/assets/curling.jpg'],['Jeff Bezos', '/assets/bezos.jpg'], ['Lemurs', '/assets/lemurs.jpg']]), {}, {:class => 'form-control'}%>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <%= f.submit 'Make bet', :class => 'btn btn-primary'%>
-              </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
+						<div class="form-group">
+							<%= f.label :topic, :class => 'col-sm-3 control-label' %>
+							<div class="col-sm-9 no-padding">
+								<%= f.select :topic, options_for_select([['---------', '/assets/money.jpg'], ['News', '/assets/news.jpg'], ['History', '/assets/history.jpg'], ['The Internet', '/assets/internet.jpg'], ['Food', '/assets/food.jpg'], ['Literature', '/assets/literature.jpg'], ['Silicon Valley', '/assets/success.jpg'], ['Movies', '/assets/hollywood.jpg'], ['Music', '/assets/music.jpg'], ['Business', '/assets/business.jpg'], ['Sports', '/assets/curling.jpg'], ['Jeff Bezos', '/assets/bezos.jpg'], ['Lemurs', '/assets/lemurs.jpg']]), {}, {:class => 'form-control'} %>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<%= f.submit 'Make bet', :class => 'btn btn-primary' %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
 <% end %>
 
 </body>
