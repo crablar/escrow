@@ -106,55 +106,57 @@
   <br><br>
 
 </div> <!-- /container -->
+<% if user_signed_in? %>
 
-<div class="modal fade" id="betModal" tabindex="-1" role="dialog" aria-labelledby="betModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="betModalLabel">Make a bet</h4>
+    <div class="modal fade" id="betModal" tabindex="-1" role="dialog" aria-labelledby="betModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="betModalLabel">Make a bet</h4>
+          </div>
+          <%= form_for :article, url: articles_path, html: {role: 'form', class: 'form-horizontal'} do |f| %>
+              <div class="modal-body">
+                <%= hidden_field_tag :creator_id, current_user.id %>
+                <br>
+                <div class="form-group">
+                  <%= f.label :title, :class => 'col-sm-3 control-label'%>
+                  <div class="col-sm-9 no-padding">
+                    <%= f.text_field :title, :class => 'form-control' %>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :min_bet, :class => 'col-sm-3 control-label'%>
+                  <div class="col-sm-9 no-padding">
+                    <%= f.text_field :min_bet, :class => 'form-control' %>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <%= f.label :time_to_expiration, :class => 'col-sm-3 control-label' %>
+                  <div class="col-sm-9 no-padding">
+                    <%= f.select :time_to_expiration, options_for_select([['1 second', 1],['10 seconds', 10],['1 minute', 60], ['10 minutes', 600]]), {}, {:class => 'form-control'}%>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :topic, :class => 'col-sm-3 control-label' %>
+                  <div class="col-sm-9 no-padding">
+                    <%= f.select :topic, options_for_select([['---------', '/assets/money.jpg'],['News', '/assets/news.jpg'],['History', '/assets/history.jpg'],['The Internet', '/assets/internet.jpg'],['Food', '/assets/food.jpg'],['Literature', '/assets/literature.jpg'],['Silicon Valley', '/assets/success.jpg'],['Movies', '/assets/hollywood.jpg'],['Music', '/assets/music.jpg'],['Business', '/assets/business.jpg'],['Sports', '/assets/curling.jpg'],['Jeff Bezos', '/assets/bezos.jpg'], ['Lemurs', '/assets/lemurs.jpg']]), {}, {:class => 'form-control'}%>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <%= f.submit 'Make bet', :class => 'btn btn-primary'%>
+              </div>
+          <% end %>
+        </div>
       </div>
-      <%= form_for :article, url: articles_path, html: {role: 'form', class: 'form-horizontal'} do |f| %>
-          <div class="modal-body">
-            <%= hidden_field_tag :creator_id, current_user.id %>
-            <br>
-            <div class="form-group">
-              <%= f.label :title, :class => 'col-sm-3 control-label'%>
-              <div class="col-sm-9 no-padding">
-                <%= f.text_field :title, :class => 'form-control' %>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :min_bet, :class => 'col-sm-3 control-label'%>
-              <div class="col-sm-9 no-padding">
-                <%= f.text_field :min_bet, :class => 'form-control' %>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <%= f.label :time_to_expiration, :class => 'col-sm-3 control-label' %>
-              <div class="col-sm-9 no-padding">
-                <%= f.select :time_to_expiration, options_for_select([['1 second', 1],['10 seconds', 10],['1 minute', 60], ['10 minutes', 600]]), {}, {:class => 'form-control'}%>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :topic, :class => 'col-sm-3 control-label' %>
-              <div class="col-sm-9 no-padding">
-                <%= f.select :topic, options_for_select([['---------', '/assets/money.jpg'],['News', '/assets/news.jpg'],['History', '/assets/history.jpg'],['The Internet', '/assets/internet.jpg'],['Food', '/assets/food.jpg'],['Literature', '/assets/literature.jpg'],['Silicon Valley', '/assets/success.jpg'],['Movies', '/assets/hollywood.jpg'],['Music', '/assets/music.jpg'],['Business', '/assets/business.jpg'],['Sports', '/assets/curling.jpg'],['Jeff Bezos', '/assets/bezos.jpg'], ['Lemurs', '/assets/lemurs.jpg']]), {}, {:class => 'form-control'}%>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <%= f.submit 'Make bet', :class => 'btn btn-primary'%>
-          </div>
-      <% end %>
     </div>
-  </div>
-</div>
+<% end %>
 
 </body>
 </html>
