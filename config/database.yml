@@ -3,8 +3,6 @@ development:
   encoding: unicode
   database: db/escrow
   pool: 5
-  username: jeffreymeyerson
-  password:
   host: localhost
 
 test:
@@ -12,6 +10,4 @@ test:
   encoding: unicode
   database: db/escrow_test
   pool: 5
-  username: jeffreymeyerson
-  password:
   host: localhost
