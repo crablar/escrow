@@ -1,7 +1,23 @@
-  <div hidden = true><%= rank = 1 %></div>
-  <% @users.each do |user| %>
-    <div class="row">
-      <p><%= rank %>. <%= user.email %>     $<%= user.balance.round(2) %> </p>
-    </div>
-  	<div hidden=true><%= rank = rank + 1 %></div>
-  <% end %>
+<style>
+	.paragraph {
+		font-size: 18px;
+	}
+
+	img.leaderboard_av {
+		width: 60px;
+		height: 60px;
+		border-radius: 5px;
+	}
+
+</style>
+
+<div hidden=true><%= rank = 1 %></div>
+<% @users.each do |user| %>
+	<div class="row">
+		<p class="paragraph">
+			<img class="leaderboard_av" src="http://jeffmeyerson.com/wp-content/uploads/2014/05/<%= user.avatar %>">
+			<%= rank %>. <%= user.username %>     $<%= user.balance.round(2) %>
+		</p>
+	</div>
+	<div hidden=true><%= rank = rank + 1 %></div>
+<% end %>

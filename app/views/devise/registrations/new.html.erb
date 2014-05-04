@@ -5,6 +5,9 @@
 	<h2 class="form-signin-header">Sign up</h2>
   	<%= f.email_field :email, :class => "form-control",  :placeholder => "Email", :autofocus => true  %>
 
+	<%= f.text_field :username, :class => "form-control",  :placeholder => "Name" %>
+	<%= f.select :avatar, options_for_select([['Avatar', "anonymous.jpg"], ['Arianna', 'arianna.jpg'], ['Asimo', 'asimo.jpg'], ['Moneybot', 'moneybot.jpg'], ['Spiderman', 'spiderman.jpg'], ['Will', 'will.jpg'], ['Windows', 'windows.jpg']]), {}, {:class => 'form-control'} %>
+
 	<%= f.password_field :password, :class => "form-control",  :placeholder => "Password", autocomplete: "off"%>
 	<%= f.password_field :password_confirmation, :class => "form-control",  :placeholder => "Password confirmation",  autocomplete: "off"%>
 
