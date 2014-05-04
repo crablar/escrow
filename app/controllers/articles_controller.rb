@@ -105,23 +105,22 @@ class ArticlesController < ApplicationController
 
 	def evaluate_user_bets
 		puts "debug evaluating"
-		User.all.each do |user|
-			Bet.where({user_id: user.id, was_evaluated: false}).each do |bet|
-				"debug iterating on bets " + bet.id.to_s
-				article = Article.find(bet.article_id)
-				puts "debug in here"
-				if (article.expired?)
-					is_winning_bet = ((bet.is_yes && article.winning_side == "yes") || (!bet.is_yes && article.winning_side == "no"))
-					puts "debug is_winning bet " + is_winning_bet.to_s
-					if (article.winning_side == "draw" or is_winning_bet)
-						@user = User.find(user.id)
-						puts("debug *****USER GETTING PAID: " + @user.id.to_s)
-						puts("debug *****USER BALANCE BEFORE " + @user.balance.to_s)
-						@user.update_attribute(:balance, @user.balance + article.winnings_per_winner)
-						puts("debug *****USER BALANCE after " + @user.balance.to_s)
-					end
-					bet.update_attribute(:was_evaluated, true)
+		user = current_user
+		Bet.where({user_id: user.id, was_evaluated: false}).each do |bet|
+			"debug iterating on bets " + bet.id.to_s
+			article = Article.find(bet.article_id)
+			puts "debug in here"
+			if (article.expired?)
+				is_winning_bet = ((bet.is_yes && article.winning_side == "yes") || (!bet.is_yes && article.winning_side == "no"))
+				puts "debug is_winning bet " + is_winning_bet.to_s
+				if (article.winning_side == "draw" or is_winning_bet)
+					@user = User.find(user.id)
+					puts("debug *****USER GETTING PAID: " + @user.id.to_s)
+					puts("debug *****USER BALANCE BEFORE " + @user.balance.to_s)
+					@user.update_attribute(:balance, @user.balance + article.winnings_per_winner)
+					puts("debug *****USER BALANCE after " + @user.balance.to_s)
 				end
+				bet.update_attribute(:was_evaluated, true)
 			end
 		end
 	end

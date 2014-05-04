@@ -66,6 +66,7 @@
 						console.log('success');
 						console.log(data);
 						$('.total-' + data.id).html("$" + data.total_bets);
+						$('#user_balance').html("$ <%= current_user.balance %>");
 					},
 					error: function(jqXHR, status, error) {
 						console.log('error');
