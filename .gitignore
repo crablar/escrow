@@ -17,3 +17,10 @@
 
 #idea
 .idea/*
+
+#OSX files
+.DS_Store
+.s.PGSQL.5432
+app/.DS_Store
+app/assets/.DS_Store
+public/assets/

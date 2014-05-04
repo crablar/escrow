@@ -27,8 +27,6 @@ class ArticlesController < ApplicationController
 	end
 
 	def index
-		puts "debug in index"
-		check_expiration_all
 		@articles = Article.where(expired: false).sort_by { |article| article.created_at }.reverse
 	end
 
@@ -49,7 +47,9 @@ class ArticlesController < ApplicationController
 				@article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
 			end
 		end
-		redirect_to @article
+		respond_to do |format|
+			format.json{ render json: @article }
+		end
 	end
 
 	def bet_no
@@ -68,7 +68,9 @@ class ArticlesController < ApplicationController
 				@article.update_attribute(:total_bets, @article.total_bets + @article.min_bet)
 			end
 		end
-		redirect_to @article
+		respond_to do |format|
+			format.json{ render json: @article }
+		end
 	end
 
 	def check_expiration(article)
@@ -94,6 +96,7 @@ class ArticlesController < ApplicationController
 			article_id = articleToFollower.article_id
 			check_expiration(Article.find(article_id))
 		end
+		render :nothing => true, :status => 200, :content_type => 'text/html'
 	end
 
 	def get_user_balance(user_id)

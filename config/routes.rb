@@ -10,12 +10,12 @@ Escrow::Application.routes.draw do
   get 'articles/get_user_balance'
 
   resources :articles do
-    put :bet_yes, :on => :collection
-    put :bet_no, :on => :collection
+    post :bet_yes
+    post :bet_no
   end
 
   resources :leaderboards do
-    get :index,:on => :collection
+    get :index
   end
 
   root 'articles#index'

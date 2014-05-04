@@ -16,10 +16,6 @@
 //= require_tree .
 //= require bootstrap.min
 
-//var check_expiration = function() {
-//    $.ajax("check_expiration_all");
-//}
-//
-//window.setInterval(check_expiration, 1000);
-//
-
+function check_expiration_async() {
+	$.ajax({url: 'articles/check_expiration_all', type: 'POST'});
+}
