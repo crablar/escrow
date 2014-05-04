@@ -42,14 +42,14 @@
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container">
-		<div class="navbar-header" style="float:left; width:150px;">
+		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/articles">Escrow</a>
+			<a class="navbar-brand" style="width: 150px" href="/articles"> <b>Escrow</b> <small>Whichever side bets more wins.</small> </a>
 		</div>
 
 		<div class="navbar-collapse collapse" style="float:right;">
@@ -80,7 +80,7 @@
 
 			<div class="row">
 				<div class="col-lg-3" style="padding-top:50px;">
-					<p class="text-center"><img class="avatar" src=<%= current_user.avatar %>></p>
+					<p class="text-center"><img class="avatar" src="http://jeffmeyerson.com/wp-content/uploads/2014/05/<%= current_user.avatar %>"></p>
 
 					<p class="text-center">Will</p>
 
@@ -154,7 +154,7 @@
 						<div class="form-group">
 							<%= f.label :topic, :class => 'col-sm-3 control-label' %>
 							<div class="col-sm-9 no-padding">
-								<%= f.select :topic, options_for_select([['---------', '/assets/money.jpg'], ['News', '/assets/news.jpg'], ['History', '/assets/history.jpg'], ['The Internet', '/assets/internet.jpg'], ['Food', '/assets/food.jpg'], ['Literature', '/assets/literature.jpg'], ['Silicon Valley', '/assets/success.jpg'], ['Movies', '/assets/hollywood.jpg'], ['Music', '/assets/music.jpg'], ['Business', '/assets/business.jpg'], ['Sports', '/assets/curling.jpg'], ['Jeff Bezos', '/assets/bezos.jpg'], ['Lemurs', '/assets/lemurs.jpg']]), {}, {:class => 'form-control'} %>
+								<%= f.select :topic, options_for_select([['---------', 'money.jpg'], ['News', 'news.jpg'], ['History', 'history.jpg'], ['The Internet', 'internet.jpg'], ['Food', 'food.jpg'], ['Literature', 'literature.jpg'], ['Silicon Valley', 'success.jpg'], ['Movies', 'hollywood.jpg'], ['Music', 'music.jpg'], ['Business', 'business.jpg'], ['Sports', 'curling.jpg'], ['Jeff Bezos', 'bezos.jpg'], ['Lemurs', 'lemurs.jpg']]), {}, {:class => 'form-control'} %>
 							</div>
 						</div>
 					</div>
