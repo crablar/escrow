@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140504180546) do
+=======
+ActiveRecord::Schema.define(version: 20140504201343) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+>>>>>>> 9ebf7c6b7259676b849e4a991290290c198e242c
 
   create_table "article_to_followers", force: true do |t|
     t.integer  "article_id"
