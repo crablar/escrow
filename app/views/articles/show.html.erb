@@ -1,15 +1,16 @@
 <!-- This page shows a single bet, and all its details (potentially comments/forum) -->
 <div class="row">
-	<%= debug @article %>
 	<div class="betbox col-md-12 text-center article-<%= @article.id %>">
 		<h1><%= @article.title %></h1>
 
-		<div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> id="CountDownTimer" style="width: 200px; height: 80px;"></div>
+		<div data-timer=<%= @article.time_to_expiration - (DateTime.current.to_i - @article.created_at.to_i) %> class="timer" id="CountDownTimer" style="width: 200px; height: 80px;"></div>
 		<hr>
 
 		<div class="row">
 			<div class="col-md-2 col-md-offset-2">
-				<%= button_to "Yes, bet $#{@article.min_bet}", {:controller => :articles, :action => :bet_yes, :article_id => @article.id, :active_user_id => current_user.id}, {:method => :put, :id => "article-#{@article.id}-btn-yes", class: 'btn btn-success', style: 'margin-right: 4rem;'} %>
+				<button class="btn btn-success btn-bet-yes" data-id="<%= @article.id %>">
+					Yes, bet $<%= @article.min_bet %>
+				</button>
 			</div>
 
 			<div class="col-md-4">
@@ -17,42 +18,67 @@
 			</div>
 
 			<div class="col-md-2">
-				<%= button_to "No, bet $#{@article.min_bet}", {:controller => :articles, :action => :bet_no, :article_id => @article.id, :active_user_id => current_user.id}, {:method => :put, :id => "article-#{@article.id}-btn-no", class: 'btn btn-danger', style: 'margin-left: 4rem;'} %>
+				<div class="col-md-2">
+					<button class="btn btn-danger btn-bet-no" data-id="<%= @article.id %>">No, bet $<%= @article.min_bet %></button>
+				</div>
 			</div>
-			<h1>Total Bets</h1>
 
-			<h1 class="total">$<%= @article.total_bets %></h1>
+			<h1>Total Bets</h1>
+			<h1 class="total-<%= @article.id %>">$<%= @article.total_bets %></h1>
 		</div>
 	</div>
 
 	<script type="text/javascript">
-		$("#CountDownTimer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
-
-		function check_expiration_async() {
-			$.ajax({url: '/#check_expiration_all', type: 'get'});
-			// TODO /#evaluate_user_bets isn't working--problem with routes?
-			$.ajax({url: '/#evaluate_user_bets', type: 'get'});
-			$("#user_balance").load(<%=@_controller.get_user_balance(current_user.id) %>);
-			if (<%= @article.expired %>) {
-				$.ajax('<%= @article.id %>.json', {
-					success: function (data, status, jqXHR) {
-						console.log("success");
-						// Disable the buttons so you can't bet on it anymore
-						$('#article-<%= @article.id %>-btn-yes').prop('disabled', true);
-						$('#article-<%= @article.id %>-btn-no').prop('disabled', true);
-						// TODO: show the result of the bet
+		$(function() {
+			$('.btn-bet-yes').click(function() {
+				$.ajax({
+					url:   $(this).data('id') + '/bet_yes',
+					type: 'POST',
+					data: {
+						article_id: $(this).data('id'),
+						active_user_id: <%= current_user.id %>
 					},
-					error: function (jqXHR, status, error) {
-						console.log("error: " + status.toString());
+					dataType: 'json',
+					accepts: 'json',
+					success: function(data, status) {
+						console.log('success');
+						console.log(data);
+						$('.total-' + data.id).html("$" + data.total_bets);
+					},
+					error: function(jqXHR, status, error) {
+						console.log('error');
+						console.log(error);
 					}
 				});
-			}
-		}
-		;
-		setInterval("check_expiration_async()", 2000);
+			});
+
+			$('.btn-bet-no').click(function() {
+				$.ajax({
+					url: $(this).data('id') + '/bet_no',
+					type: 'POST',
+					data: {
+						article_id: $(this).data('id'),
+						active_user_id: <%= current_user.id %>
+					},
+					dataType: 'json',
+					accepts: 'json',
+					success: function(data, status) {
+						console.log('success');
+						console.log(data);
+						$('.total-' + data.id).html("$" + data.total_bets);
+					},
+					error: function(jqXHR, status, error) {
+						console.log('error');
+						console.log(error);
+					}
+				});
+			});
+
+			$(".timer").TimeCircles({count_past_zero: false, time: { Days: { show: false }, Hours: { show: false } }});
+
+			$(setInterval("check_expiration_async()", 2000));
+		});
 
 	</script>
 
-
-</div>
 </div>

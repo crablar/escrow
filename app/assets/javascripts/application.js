@@ -17,5 +17,5 @@
 //= require bootstrap.min
 
 function check_expiration_async() {
-	$.ajax({url: 'articles/check_expiration_all', type: 'POST'});
+	$.ajax({url: '/articles/check_expiration_all', type: 'POST'});
 }

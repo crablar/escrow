@@ -1,9 +1,7 @@
-<table>
   <div hidden = true><%= rank = 1 %></div>
-  <%=@users.each do |user| %>
+  <% @users.each do |user| %>
     <div class="row">
       <p><%= rank %>. <%= user.email %>     $<%= user.balance.round(2) %> </p>
     </div>
-  <div hidden=true><%= rank = rank + 1 %></div>
+  	<div hidden=true><%= rank = rank + 1 %></div>
   <% end %>
-</table>
