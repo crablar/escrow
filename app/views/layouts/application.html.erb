@@ -58,11 +58,12 @@
 			</div>
 
 			<ul class="nav navbar-nav navbar-right">
-				<li><%= link_to "Home", articles_path %></li>
+			  <li><%= link_to "Home", articles_path %></li>
 				<li><%= link_to "Leaderboard", leaderboards_path %></li>
 				<li>
 					<button class="btn btn-primary" data-target="#betModal" data-toggle="modal">Make a bet</button>
 				</li>
+			  <li><%= link_to "About", welcome_index_path %></li>
 			</ul>
 		</div>
 	</div>
@@ -82,7 +83,7 @@
 				<div class="col-lg-3" style="padding-top:50px;">
 					<p class="text-center"><img class="avatar" src="http://jeffmeyerson.com/wp-content/uploads/2014/05/<%= current_user.avatar %>"></p>
 
-					<p class="text-center">Will</p>
+					<p class="text-center"><%= current_user.username %></p>
 
 					<p id="user_balance" class="text-center">$<%= current_user.balance.round(2) %></p>
 					<!--%= debug current_user %-->
@@ -147,7 +148,7 @@
 						<div class="form-group">
 							<%= f.label :time_to_expiration, :class => 'col-sm-3 control-label' %>
 							<div class="col-sm-9 no-padding">
-								<%= f.select :time_to_expiration, options_for_select([['10 seconds', 10], ['1 minute', 60], ['10 minutes', 600], ['1 hour', 3600], ['1 day', 86400]]), {}, {:class => 'form-control'} %>
+								<%= f.select :time_to_expiration, options_for_select([['10 seconds', 10], ['1 minute', 60], ['10 minutes', 600], ['1 hour', 3600]]), {}, {:class => 'form-control'} %>
 							</div>
 						</div>
 

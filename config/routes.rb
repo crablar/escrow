@@ -18,5 +18,7 @@ Escrow::Application.routes.draw do
     get :index
   end
 
+  get 'welcome/index'
+
   root 'articles#index'
 end
