@@ -44,6 +44,8 @@
 						console.log('success');
 						console.log(data);
 						$('.total-' + data.id).html("$" + data.total_bets);
+						//TODO data.topic is only changed as a quick fix...see articles controller.rb
+						$('#user_balance').html(data.topic);
 					},
 					error: function(jqXHR, status, error) {
 						console.log('error');
@@ -66,7 +68,8 @@
 						console.log('success');
 						console.log(data);
 						$('.total-' + data.id).html("$" + data.total_bets);
-						$('#user_balance').html("$ <%= current_user.balance %>");
+						//TODO data.topic is only changed as a quick fix...see articles controller.rb
+						$('#user_balance').html(data.topic);
 					},
 					error: function(jqXHR, status, error) {
 						console.log('error');

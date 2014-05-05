@@ -35,8 +35,8 @@ class ArticlesController < ApplicationController
 		@article = Article.find(params[:article_id])
 		@article_following = ArticleToFollower.new(article_id: @article.id, user_id: params[:active_user_id])
 		@article_following.save
+		@active_user = User.find(params[:active_user_id])
 		if !(check_expiration(@article))
-			@active_user = User.find(params[:active_user_id])
 			@bet = Bet.new
 			@bet.update_attribute(:user_id, params[:active_user_id])
 			@bet.update_attribute(:article_id, @article.id)
@@ -48,6 +48,9 @@ class ArticlesController < ApplicationController
 			end
 		end
 		respond_to do |format|
+			@active_user = User.find(params[:active_user_id])
+			#TODO this is really hacky, make the hashed attribute make sense
+			@article["topic"] = @active_user.balance
 			format.json{ render json: @article }
 		end
 	end
@@ -69,6 +72,9 @@ class ArticlesController < ApplicationController
 			end
 		end
 		respond_to do |format|
+			@active_user = User.find(params[:active_user_id])
+			#TODO this is really hacky, make the hashed attribute make sense
+			@article["topic"] = @active_user.balance
 			format.json{ render json: @article }
 		end
 	end
