@@ -41,3 +41,5 @@ gem 'spring',        group: :development
 
 #Devise
 gem 'devise';
+
+gem 'highline'

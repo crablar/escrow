@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require 'highline/import'
+require_relative '../config/environment'
+
+class EscrowCLI
+  def run
+    catch(:exit) do
+      loop do
+        choose do |menu|
+          menu.prompt = 'What can I do for you?'
+          menu.choice('show Article columns') do
+            puts Article.column_names.inspect
+          end
+          menu.choice('exit') { throw :exit }
+        end
+      end
+    end
+  end
+end
+
+def run
+  background_rails_server
+  EscrowCLI.new.run
+end
+
+def background_rails_server
+  Thread.new do
+    $stderr.puts "Running server on :9292\n\n"
+    Rack::Server.start(quiet: true)
+  end
+end
+
+run if __FILE__ == $0
